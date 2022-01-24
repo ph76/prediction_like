@@ -1,2 +1,2 @@
-# prediction_like
+# Like predictions
 Prediction Like in Dating Apps
