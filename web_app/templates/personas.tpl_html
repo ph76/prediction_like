@@ -1,0 +1,28 @@
+{% extends "base.tpl_html"   %}
+
+
+
+
+{% block content %}
+
+<div id="scroll" style="width:80vw;height:100vh;overflow:auto;padding:10vw;">
+<h2> Qui suis-je?</h2>
+<hr/>
+{%for i in range(0,len) %}
+<div style="width:80vw;display:inline-block;background:white;">
+
+<div style="width:80vw;display:block;background:transparent;border-radius:20vw;">
+<a href="/like/{{i}}" ><img id="Photo" src="{{ personas[i]["src"]  }}" style="margin:2vw;width:40vw;height:40vw;background:black;border-radius:20vw;"></a>
+<h3>{{ personas[i]["name"] }} - {{ personas[i]["age"] }} ans <h3>
+{{ personas[i]["criterias"] }}
+{{ personas[i]["likes"] }}/{{ personas[i]["eval"] }} - <a href="/like/{{i}}" >Sélectionner</a>
+</div>
+<hr/>
+{%endfor%}
+
+
+</div>
+
+</div>
+
+{% endblock %}

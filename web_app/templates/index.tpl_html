@@ -1,0 +1,7 @@
+{% extends "base.tpl_html" %}
+
+{% block content %}
+<h2>Meet Now!</h2>
+<hr/>
+<a href="/personas" >Choisis ton persona</a>
+{% endblock %}

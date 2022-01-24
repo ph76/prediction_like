@@ -1,0 +1,129 @@
+{% extends "base.tpl_html"   %}
+
+
+{% block script %}
+<script >
+var profile= {{ profile }};
+function next(  params  ){
+
+ var img = document.getElementById("Photo");
+            img.style.display="none";
+var xhttp = new XMLHttpRequest();
+xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+       // Typical action to be performed when the document is ready:
+       console.log(this.responseText);
+           var jsonResponse = JSON.parse(this.responseText); 
+           idPhoto = jsonResponse.idPhoto;
+          
+           var img = document.getElementById("Photo");
+           img.src=jsonResponse.src;
+           img.style.display="block";
+          
+           reset();
+            blnScroll=true;
+    }
+};
+xhttp.open("POST", "next", true);
+xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+
+if (!params) params={};
+xhttp.send(JSON.stringify(params));
+}
+
+
+
+
+
+var timer; 
+var blnScroll=false;
+setTimeout( ()=>{  
+next();
+var d = document.getElementById("scroll");
+d.onscroll = function() {myFunction()};
+},1);
+
+function reset(){
+var d = document.getElementById("scroll");
+d.scrollLeft = d.offsetWidth *0.5;
+ timer =null;
+}
+
+function myFunction() {
+if(!blnScroll) return;
+
+var d = document.getElementById("scroll");
+ console.log(d.scrollLeft);
+ 
+ 
+ 
+ if(d.scrollLeft< d.offsetWidth *0.5)
+ {
+ divno = document.getElementById("no");
+ divno.style.display="none";
+  divok = document.getElementById("ok");
+ divok.style.display="block";
+ divok.style.opacity=(d.offsetWidth *0.5-d.scrollLeft)/(d.offsetWidth *0.5);
+ }
+ else
+ {
+  divno = document.getElementById("no");
+ divno.style.display="block";
+  divok = document.getElementById("ok");
+ divok.style.display="none";
+  divno.style.opacity=(d.scrollLeft-d.offsetWidth *0.5)/(d.offsetWidth *0.5);
+ }
+ if (timer) clearTimeout(timer);
+ if( d.scrollLeft<d.offsetWidth*0.15){
+ setTimeout(()=>{ next({ idPhoto:idPhoto,answer:1,profile:profile  });  }  ,500);
+ blnScroll=false;
+ }else 
+  if( d.scrollLeft>d.offsetWidth*0.85){
+   setTimeout(()=>{ next({ idPhoto:idPhoto,answer:0,profile:profile  });  }  ,500);
+   blnScroll=false;
+ }
+ else
+ timer =  setTimeout(  reset,300);
+}
+
+</script>
+{% endblock %}
+
+{% block content %}
+
+<div id="no" style="text-align:center;width:100vw;height:80vw;display:none;color:red;font-size:30vw;font-weight:bold;position:fixed;bottom:0;left:0;">
+NEXT
+</div> 
+<div id="ok" style="text-align:center;width:100vw;height:80vw;display:none;opacity:0;color:green;font-size:30vw;font-weight:bold;position:fixed;bottom:0;left:0;">
+LIKE
+</div> 
+<div style="text-align:center;width:50vw;height:15vw;display:block;color:green;font-size:8vw;font-weight:bold;position:fixed;bottom:0;left:50vw;">
+LIKE ->
+</div>
+<div style="text-align:center;width:50vw;height:15vw;display:block;color:red;font-size:8vw;font-weight:bold;position:fixed;bottom:0;left:0;">
+<- NEXT 
+</div>
+<div id="scroll" style="width:100vw;height:100vh;overflow:auto;">
+<div style="width:200vw;height:100vh;display:flex;background:rgba(0,0,0,0.01);">
+<div style="width:50vw;height:100vh;display:inline-block;background:transparent;"></div>
+<div style="width:100vw;height:100vh;display:inline-block;background:white;">
+
+<div style="margin:10vw;width:80vw;height:80vw;display:block;background:transparent;border-radius:40vw;">
+<img id="Photo" src="" style="margin:2vw;width:76vw;height:76vw;background:black;border-radius:38vw;display:none;">
+</div>
+
+
+
+</div>
+<div style="width:50vw;height:100vh;display:inline-block;background:transparent;"></div>
+</div>     
+</div>
+<div  style="position:fixed;padding:2vw;top:0;right:2vw;">
+<a href="/personas">
+{{ name }}
+<img src="data:image/png;base64,{{ b64_string }}" style="width:10vw;height:10vw;border-radius:5vw;"></a>
+</div>
+<div style="text-align:center;width:100vw;height:15vw;display:block;color:black;font-size:4vw;font-weight:bold;position:fixed;bottom:15vw;left:0;">
+{{ criterias}}
+</div>
+{% endblock %}

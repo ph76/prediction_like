@@ -1,0 +1,11 @@
+{% extends "base.tpl_html"   %}
+
+{% block content %}
+<h1>Result Like Person - Group {{ igroup }}</h1>
+       <img src="data:image/png;base64,{{ b64_string }}" alt="User Image">
+       
+       
+       {%for i in range(0, n_likeperson)%}
+<img src="data:image/png;base64,{{likeperson[i]}}" alt="User Image"   width="50" height="50"> 
+{%endfor%}
+{% endblock %}
